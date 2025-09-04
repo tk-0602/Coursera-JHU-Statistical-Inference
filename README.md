@@ -2,8 +2,16 @@
 Repository of my work for the [Statistical Inference course](https://www.coursera.org/learn/statistical-inference) created by Brian Caffo, Jeff Leek and Roger Peng from the Johns Hopkins Bloomberg School of Public Health, in the Department of Biostatistics. Within this, my work includes a series of four weekly multiple-choice quizzes (along with the R code I used to calculate my answers) and a two-part project comprising two PDF reports of a [Simulation Exercise](https://github.com/tk-0602/Coursera-JHU-Statistical-Inference/blob/d7f9187849cf87e7f582b5893ae60fdda5eea4d0/Project/Part%201%20-%20Simulation%20Exercise/Part_1_Simulation_Exercise.pdf) and a [Basic Inferential Data Analysis](https://github.com/tk-0602/Coursera-JHU-Statistical-Inference/blob/d7f9187849cf87e7f582b5893ae60fdda5eea4d0/Project/Part%202%20-%20Basic%20Inferential%20Data%20Analysis/Part_2_Basic_Inferential_Data_Analysis.pdf) task. These reports were created as R Markdown (.Rmd) files which were then knit using `knitr` and compiled to PDF. Similarly, my answers to the quizzes were recorded in R Markdown files before being knit to standard markdown (.md) files.
 
 ## Course Content
-The course is taught via 13 lectures split into several videos:
+The course is taught via 13 lectures split into several videos with four quizzes that cover material from these videos. The quizzes focus on groups of specific lectures.
 
+| Week | Lectures | Quiz |
+| ---  |    ---   |  --- |
+| Week 1: Probability & Expected Values | 1. Introduction <br> 2. Probability <br> 3. Conditional Probability <br> 4. Expectations | [Quiz 1]() |
+| Week 2: Variability, Distribution, and Asymptotics | 5. Variability <br> 6. Common Distributions <br> 7. Asymptotics | [Quiz 2]() |
+| Week 3: Intervals, Testing, and P-Values | 8. T confidence intervals <br> 9. Hypothesis testing <br> 10. P-values | [Quiz 3]() (Lectures 8 - 10) and [Quiz 4]() (Lectures 8 - 13) |
+| Week 4: Power, Bootstrapping, and Permutation Tests | 11. Power <br> 12. Multiple Testing <br> 13. Resampling | [Quiz 4]() |
+
+<!---
 1. Introduction
 2. Probability
 3. Conditional Probability
@@ -24,6 +32,7 @@ Covering material from these videos, the quizzes centre around several specific 
 - [Quiz 2]() covers lectures 5 - 7
 - [Quiz 3]() covers lectures 8 - 10
 - [Quiz 4]() covers lectures 8 - 13
+--->
 
 ## Project
 
