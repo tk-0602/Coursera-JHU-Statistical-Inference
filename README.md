@@ -6,10 +6,10 @@ The course is taught via 13 lectures split into several videos with four quizzes
 
 | Week | Lectures | Quiz |
 | ---  |    ---   |  --- |
-| Week 1: Probability & Expected Values | 1. Introduction <br> 2. Probability <br> 3. Conditional Probability <br> 4. Expectations | [Quiz 1]() |
-| Week 2: Variability, Distribution, and Asymptotics | 5. Variability <br> 6. Common Distributions <br> 7. Asymptotics | [Quiz 2]() |
-| Week 3: Intervals, Testing, and P-Values | 8. T confidence intervals <br> 9. Hypothesis testing <br> 10. P-values | [Quiz 3]() (Lectures 8 - 10) and [Quiz 4]() (Lectures 8 - 13) |
-| Week 4: Power, Bootstrapping, and Permutation Tests | 11. Power <br> 12. Multiple Testing <br> 13. Resampling | [Quiz 4]() |
+| Week 1: Probability & Expected Values | 1. Introduction <br> 2. Probability <br> 3. Conditional Probability <br> 4. Expectations | [Quiz 1](https://github.com/tk-0602/Coursera-JHU-Statistical-Inference/blob/e8d82937a4302dfd5bb70249930a00b5fd2a46b5/Quizzes/Quiz%201/Quiz_1.pdf) |
+| Week 2: Variability, Distribution, and Asymptotics | 5. Variability <br> 6. Common Distributions <br> 7. Asymptotics | [Quiz 2](https://github.com/tk-0602/Coursera-JHU-Statistical-Inference/blob/e8d82937a4302dfd5bb70249930a00b5fd2a46b5/Quizzes/Quiz%202/Quiz_2.pdf) |
+| Week 3: Intervals, Testing, and P-Values | 8. T confidence intervals <br> 9. Hypothesis testing <br> 10. P-values | [Quiz 3](https://github.com/tk-0602/Coursera-JHU-Statistical-Inference/blob/e8d82937a4302dfd5bb70249930a00b5fd2a46b5/Quizzes/Quiz%203/Quiz_3.pdf) (Lectures 8 - 10) and [Quiz 4](https://github.com/tk-0602/Coursera-JHU-Statistical-Inference/blob/e8d82937a4302dfd5bb70249930a00b5fd2a46b5/Quizzes/Quiz%204/Quiz_4.pdf) (Lectures 8 - 13) |
+| Week 4: Power, Bootstrapping, and Permutation Tests | 11. Power <br> 12. Multiple Testing <br> 13. Resampling | [Quiz 4](https://github.com/tk-0602/Coursera-JHU-Statistical-Inference/blob/e8d82937a4302dfd5bb70249930a00b5fd2a46b5/Quizzes/Quiz%204/Quiz_4.pdf) |
 
 <!---
 1. Introduction
