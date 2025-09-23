@@ -1,0 +1,206 @@
+---
+title: "Quiz 4"
+author: "Tushar Kataria"
+output:
+  pdf_document:
+    highlight: tango
+    number_sections: true
+  html_document:
+    theme: flatly
+header-includes:
+- \usepackage{titling}
+- "\\setlength{\\droptitle}{-6em}"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+
+A pharmaceutical company is interested in testing a potential blood pressure lowering medication. Their first examination considers only subjects that received the medication at baseline then two weeks later. The data are as follows (SBP in mmHg)
+
+| Subject | Baseline | Week 2 |
+|---------|----------|--------|
+| 1       | 140      | 132    |
+| 2       | 138      | 135    |
+| 3       | 150      | 151    |
+| 4       | 148      | 146    |
+| 5       | 135      | 130    |
+
+Consider testing the hypothesis that there was a mean reduction in blood pressure? Give the P-value for the associated two sided T test.
+
+(Hint, consider that the observations are paired.)
+
+## Answer
+
+Here, for a mean difference between the followup and baseline of $\mu_{d}$, the null hypothesis is $H_{0} : \mu_{d} = 0$ which says that there is no difference in the blood pressure while the alternative hypothesis is $H_{a} : \mu_{d} \neq 0$ (there is a difference). So, the p-value for the associated two-sided t-test for these paired observations is as follows:
+
+```{r q1}
+baseline <- c(140, 138, 150, 148, 135)
+followup <- c(132, 135, 151, 146, 130)
+
+t.test(followup, baseline, alternative = "two.sided", paired = TRUE)$p.value
+```
+
+# Question 2
+
+A sample of 9 men yielded a sample average brain volume of 1,100cc and a standard deviation of 30cc. What is the complete set of values of $\mu_{0}$ that a test of $H_{0} : \mu = \mu_{0}$ would fail to reject the null hypothesis in a two sided 5% Students t-test?
+
+## Answer
+
+```{r q2}
+1100 + c(-1, 1) * qt(0.975, 8) * 30/sqrt(9)
+```
+
+# Question 3
+
+Researchers conducted a blind taste test of Coke versus Pepsi. Each of four people was asked which of two blinded drinks given in random order that they preferred. The data was such that 3 of the 4 people chose Coke. Assuming that this sample is representative, report a P-value for a test of the hypothesis that Coke is preferred to Pepsi using a one sided exact test.
+
+## Answer
+
+Let $p$ be the proportion of people who prefer Coke, such that the null hypothesis is $H_{0} : p = 0.5$ versus the alternative hypothesis $H_{a} : p > 0.5$.
+
+Let $X$ be the number of out of 4 that prefer Coke and assume $X \sim Binomial(p, 0.5)$.
+
+With this, the p-value is calculated as
+
+$$
+\begin{aligned}
+  p-value = P(X \geq 3) &= \binom{4}{3} 0.5^{3} 0.5^{1} + \binom{4}{4} 0.5^{4} 0.5^{0} \\
+  &= \bf{\binom{4}{3} 0.5^{4} + \binom{4}{3} 0.5^{4}}
+\end{aligned}
+$$
+
+This is computed in R using the binomial distribution as shown below:
+
+```{r q3.1}
+pbinom(2, size = 4, prob = 0.5, lower.tail = FALSE)
+```
+
+Alternatively, the equation above can also be used to calculate this p-value:
+
+```{r q3.2}
+choose(4, 3) * 0.5^4 + choose(4, 4) * 0.5^4
+```
+
+# Question 4
+
+Infection rates at a hospital above 1 infection per 100 person days at risk are believed to be too high and are used as a benchmark. A hospital that had previously been above the benchmark recently had 10 infections over the last 1,787 person days at risk. About what is the one sided P-value for the relevant test of whether the hospital is *below* the standard?
+
+## Answer
+
+The null and alternative hypotheses are $H_{0} : \lambda = 0.01$ versus $H_{a} : \lambda < 0.01$ with $X = 11$ and $t = 1787$, and assuming $X \sim Poisson(0.01 \times t)$, the one-sided p-value is
+
+```{r q4}
+ppois(10, lambda = 0.01 * 1787)
+```
+
+# Question 5
+
+Suppose that 18 obese subjects were randomized, 9 each, to a new diet pill and a placebo. Subjects’ body mass indices (BMIs) were measured at a baseline and again after having received the treatment or placebo for four weeks. The average difference from follow-up to the baseline (followup - baseline) was -3 kg/m2 for the treated group and 1 kg/m2 for the placebo group. The corresponding standard deviations of the differences was 1.5 kg/m2 for the treatment group and 1.8 kg/m2 for the placebo group. Does the change in BMI appear to differ between the treated and placebo groups? Assuming normality of the underlying data and a common population variance, give a pvalue for a two sided t test.
+
+## Answer
+
+The null hypothesis is $H_{0} : \mu_{difference, treated} = \mu_{difference, placebo}$
+
+```{r q5}
+n_t <- n_p <- 9
+
+# treated
+mu_t <- -3
+s_t <- 1.5
+
+# placebo
+mu_p <- 1
+s_p <- 1.8
+
+s_pool <- sqrt(((n_t - 1) * s_t^2 + (n_p - 1) * s_p^2) / (n_t + n_p - 2))
+
+ts <- (mu_t - mu_p) / (s_pool * sqrt(1/n_t + 1/n_p))
+2 * pt(ts, n_t + n_p - 2)
+```
+
+Therefore, the p-value for a two-sided t-test is **less than 0.01**.
+
+# Question 6
+
+Brain volumes for 9 men yielded a 90% confidence interval of 1,077 cc to 1,123 cc. Would you reject in a two sided 5% hypothesis test of $H_{0} : \mu = 1,078$?
+
+## Answer
+
+**No, you wouldn't reject.** The 95% interval would be wider than the 90% interval. Since 1,078 is in the narrower 90% interval, it would also be in the wider 95% interval. Thus, in either case it's in the interval and so you would fail to reject.
+
+# Question 7
+
+Researchers would like to conduct a study of 100 healthy adults to detect a four year mean brain volume loss of $.01 mm^3$. Assume that the standard deviation of four year volume loss in this population is $.04 mm^3$. About what would be the power of the study for a 5%, percent one sided test versus a null hypothesis of no volume loss?
+
+## Answer
+
+The hypothesis is $H_{0} : \mu_{\Delta} = 0$ versus $H_{a} : \mu_{\Delta} > 0$ where $\mu_{\Delta}$ is volume loss (defined as Baseline - Four Weeks). The test statistic is $10 \frac{\bar{X}_{\Delta}}{0.04}$ which is rejected if it is larger than $Z_{0.95} = 1.645$.
+
+We want to calculate
+
+$$
+\begin{aligned}
+  P \left( \frac{\bar{X}_{\Delta}}{\sigma_{\Delta} / 10} > 1.645 | \mu_{\Delta = 0.01} \right) &= P \left( \frac{\bar{X}_{\Delta} - 0.01}{0.004} > 1.645 - \frac{0.01}{0.004} | \mu_{\Delta = 0.01} \right) \\
+  &= P(Z > -0.855) \\
+  &= 0.80
+\end{aligned}
+$$
+
+Or note that $\bar{X}_{\Delta}$ is $N(0.01, 0.004)$ under the alternative and we want $P(\bar{X}_{\Delta} > 1.645 \times 0.004)$ under $H_{a}$.
+
+```{r q7.1}
+pnorm(1.645 * 0.004, mean = 0.01, sd = 0.004, lower.tail = FALSE)
+```
+
+Alternatively, the power can be calculated using `power.t.test` in R for a similar result:
+
+```{r q7.2}
+power.t.test(n = 100, delta = 0.01 - 0, sd = 0.04, type = "one.sample", alt = "one.sided")$power
+```
+
+# Question 8
+
+Researchers would like to conduct a study of $n$ healthy adults to detect a four year mean brain volume loss of $.01 mm^3$. Assume that the standard deviation of four year volume loss in this population is $.04 mm^3$. About what would be the value of n needed for 90%, percent power of type one error rate of 5%, percent one sided test versus a null hypothesis of no volume loss?
+
+## Answer
+
+The hypothesis is $H_{0} : \mu_{\Delta} = 0$ versus $H_{a} : \mu_{\Delta} > 0$ where $\mu_{\Delta}$ is volume loss (defined as Baseline - Four Weeks). The test statistic is $10 \frac{\bar{X}_{\Delta}}{0.04 / \sqrt{n}}$ which is rejected if it is larger than $Z_{0.95} = 1.645$.
+
+We want to calculate
+
+$$
+\begin{aligned}
+  P \left( \frac{\bar{X}_{\Delta}}{\sigma_{\Delta} / \sqrt{n}} > 1.645 | \mu_{\Delta = 0.01} \right) &= P \left( \frac{\bar{X}_{\Delta} - 0.01}{0.04 / \sqrt{n}} > 1.645 - \frac{0.01}{0.04 / \sqrt{n}} | \mu_{\Delta = 0.01} \right) \\
+  &= P(Z > 1.645 - \sqrt{n} / 4) \\
+  &= 0.90
+\end{aligned}
+$$
+
+So we need $1.645 - \sqrt{n} / 4 = Z_{0.10} = -1.282$ and thus
+
+$$
+\begin{aligned}
+  n = [4 \times (1.645 + 1.282)] ^ 2
+\end{aligned}
+$$
+
+```{r q8.1}
+ceiling( (4 * ( qnorm(0.95) - qnorm(0.1) )) ^ 2 )
+```
+
+Alternatively, `power.t.test` in R can be used to get the sample size:
+
+```{r q8.2}
+power.t.test(power = 0.9, delta = 0.01 - 0, sd = 0.04, type = "one.sample", alt = "one.sided")$n
+```
+
+# Question 9
+
+As you increase the type one error rate, $\alpha$, what happens to power?
+
+## Answer
+
+**You will get larger power** because as you require less evidence to reject (your $\alpha$ rate goes up), you will have larger power.

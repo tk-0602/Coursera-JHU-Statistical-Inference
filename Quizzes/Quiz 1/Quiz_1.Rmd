@@ -1,0 +1,95 @@
+---
+title: "Quiz 1"
+author: "Tushar Kataria"
+output:
+  html_document:
+    theme: flatly
+  pdf_document:
+    highlight: tango
+    number_sections: true
+header-includes:
+- \usepackage{titling}
+- "\\setlength{\\droptitle}{-6em}"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+
+Consider influenza epidemics for two parent heterosexual families. Suppose that the probability is 17% that at least one of the parents has contracted the disease. The probability that the father has contracted influenza is 12% while the probability that both the mother and father have contracted the disease is 6%. What is the probability that the mother has contracted influenza?
+
+## Answer
+
+A = Mother and B = Father such that $P(A \cup B) = 17\%$, $P(B) = 12\%$ and $P(A \cap B) 6\%$.
+
+Since we know $P(A \cup B) = P(A) + P(B) - P(A \cap B)$, we get $17\% = P(A) + 12\% - 6\%$, so $\bf{P(A) = 11\%}$.
+
+# Question 2
+
+A random variable, X is uniform, a box from 0 to 1 of height 1. (So that its density is $f(x) = 1$ for $0 \leq x \leq 1$.) What is its 75th percentile?
+
+## Answer
+
+This density looks like a box. The point so that the area below it is 0.75 is **0.75**. Alternatively:
+
+```{r q2}
+qunif(0.75)
+```
+
+# Question 3
+
+You are playing a game with a friend where you flip a coin and if it comes up heads you give her $X$ dollars and if it comes up tails she gives you $Y$ dollars. The probability that the coin is heads is $p$ (some number between $0$ and $1$.) What has to be true about $X$ and $Y$ to make so that both of your expected total earnings is $0$. The game would then be called “fair”.
+
+## Answer
+
+$$
+\begin{aligned}
+  p(-X) &+ (1 - p) (Y) = 0 \\
+  \Rightarrow p X &= (1 - p) Y \\
+  \Rightarrow &\bf{\frac{p}{1 - p} = \frac{Y}{X}}
+\end{aligned}
+$$ \newpage
+
+# Question 4
+
+A density that looks like a normal density (but may or may not be exactly normal) is exactly symmetric about zero. (Symmetric means if you flip it around zero it looks the same.) What is its median?
+
+## Answer
+
+**The median must be 0 since 50 percent of the mass is below 0 and 50% is above.**
+
+# Question 5
+
+Consider the following PMF shown below in R
+
+```{r q5_given_code}
+x <- 1:4
+p <- x/sum(x)
+temp <- rbind(x, p)
+rownames(temp) <- c("X", "Prob")
+temp
+```
+
+What is the mean?
+
+## Answer
+
+```{r q5}
+sum(x * p)
+```
+
+# Question 6
+
+A web site (www.medicine.ox.ac.uk/bandolier/band64/b64-7.html) for home pregnancy tests cites the following: “When the subjects using the test were women who collected and tested their own samples, the overall sensitivity was 75%. Specificity was also low, in the range 52% to 75%.” Assume the lower value for the specificity. Suppose a subject has a positive test and that 30% of women taking pregnancy tests are actually pregnant. What number is closest to the probability of pregnancy given the positive test?
+
+## Answer
+
+$$
+\begin{aligned}
+  P(\text{Preg} | +) &= \frac{P(+ | \text{Preg}) P(\text{Preg})}{P(+ | \text{Preg}) P(\text{Preg}) + P(+ | \text{Preg}^{C})P(\text{Preg}^{C})} \\
+  \Rightarrow P(\text{Preg} | +) &= \frac{0.75 \times 30}{0.75 \times 30 + (1 - 0.52) \times (1 - 0.3)} \\
+  \Rightarrow &\bf{P(\textbf{Preg} | +) \approx 0.40}
+\end{aligned}
+$$

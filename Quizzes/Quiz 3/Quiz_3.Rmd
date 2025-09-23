@@ -1,0 +1,192 @@
+---
+title: "Quiz 3"
+author: "Tushar Kataria"
+output:
+  html_document:
+    theme: flatly
+  pdf_document:
+    highlight: tango
+    number_sections: true
+header-includes:
+- \usepackage{titling}
+- "\\setlength{\\droptitle}{-6em}"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+
+In a population of interest, a sample of 9 men yielded a sample average brain volume of 1,100cc and a standard deviation of 30cc. What is a 95% Student's T confidence interval for the mean brain volume in this new population?
+
+## Answer
+
+Here, $t_{8, 0.95}$ is
+
+```{r q1.1}
+p <- 0.95
+n <- 9
+
+qt(p + (1 - p)/2, n - 1)
+```
+
+such that the confidence interval is calculated to be
+
+$$
+\begin{aligned}
+  1100 \pm 2.306 \times \frac{30}{\sqrt{9}} \approx \bf{[1077, 1123]}
+\end{aligned}
+$$ This can also be computed in R as:
+
+```{r q1.2}
+avg_brain_vol <- 1100
+p <- 0.95
+s <- 30
+n <- 9
+
+avg_brain_vol + c(-1,1) * qt(p + (1 - p)/2, n - 1) * s / sqrt(n)
+```
+
+# Question 2
+
+A diet pill is given to 9 subjects over six weeks. The average difference in weight (follow up - baseline) is -2 pounds. What would the standard deviation of the difference in weight have to be for the upper endpoint of the 95% T confidence interval to touch 0?
+
+## Answer
+
+$$
+\begin{aligned}
+  \text{Upper Endpoint} = \text{Follow Up} - \text{Baseline} + t_{8, 0.95} \times \frac{S}{\sqrt{n}}
+\end{aligned}
+$$
+
+where $\text{Follow Up} - \text{Baseline} = {-2}$, $t_{8, 0.95} = 2.306$ (as shown above) and $n = 9$, so solving for $S$ becomes
+
+$$
+\begin{aligned}
+  S = \{\text{Upper Endpoint} &- (\text{Follow Up} - \text{Baseline})\} \times \frac{\sqrt{n}}{t_{8, 0.95}} \\
+  \Rightarrow S &= \{0 - {-2}\} \times \frac{\sqrt{9}}{2.306} \\
+  \Rightarrow &\bf{S \approx 2.60}
+\end{aligned}
+$$
+
+In R, this is calculated as follows:
+
+```{r q2}
+upper_endpoint <- 0
+followup_baseline <- -2
+p <- 0.95
+n <- 9
+
+(upper_endpoint - followup_baseline) * sqrt(n) / qt(p + (1 - p)/2, n - 1)
+```
+
+# Question 3
+
+In an effort to improve running performance, 5 runners were either given a protein supplement or placebo. Then, after a suitable washout period, they were given the opposite treatment. Their mile times were recorded under both the treatment and placebo, yielding 10 measurements with 2 per subject. The researchers intend to use a T test and interval to investigate the treatment. Should they use a paired or independent group T test and interval?
+
+## Answer
+
+**A paired interval** as the observations are clearly paired, so a paired interval is preferable to an independent group interval.
+
+# Question 4
+
+In a study of emergency room waiting times, investigators consider a new and the standard triage systems. To test the systems, administrators selected 20 nights and randomly assigned the new triage system to be used on 10 nights and the standard system on the remaining 10 nights. They calculated the nightly median waiting time (MWT) to see a physician. The average MWT for the new system was 3 hours with a variance of 0.60 while the average MWT for the old system was 5 hours with a variance of 0.68. Consider the 95% confidence interval estimate for the differences of the mean MWT associated with the new system. Assume a constant variance. What is the interval? Subtract in this order (New System - Old System).
+
+## Answer
+
+The pooled variance is:
+
+$$
+\begin{aligned}
+  S_{p} &= \sqrt{\frac{(n_{new} - 1) \times S_{new} + (n_{old} - 1) \times S_{old} }{n_{new} + n_{old} - 2}} \\
+  &= \sqrt{\frac{10 - 1) \times 0.60 + (10 - 1) \times 0.68}{10 + 10 - 2}} \\
+  &= 0.8
+\end{aligned}
+$$
+
+\newpage
+
+Then, with $t_{18, 0.975} \approx 2.10$, the interval is:
+
+$$
+\begin{aligned}
+  3 - 5 \pm 2.10 \times 0.8 \times \sqrt{\frac{1}{10} + \frac{1}{10}} \approx \bf{[{-2.75}, {-1.25}]}
+\end{aligned}
+$$
+
+This is computed in R as:
+
+```{r q4}
+# new
+n_n <- 10
+mu_n <- 3
+var_n <- 0.6
+
+# old
+n_o <- 10
+mu_o <- 5
+var_o <- 0.68
+
+p <- 0.95
+
+var_pool <- ((n_n - 1) * var_n + (n_o - 1) * var_o) / (n_n + n_o - 2)
+
+(mu_n - mu_o) + c(-1, 1) * qt(p + (1 - p)/2, (n_n + n_o - 2)) * sqrt(var_pool) * sqrt(1/n_n + 1/n_o)
+```
+
+# Question 5
+
+Suppose that you create a 95% T confidence interval. You then create a 90% interval using the same data. What can be said about the 90% interval with respect to the 95% interval?
+
+## Answer
+
+**The interval will be narrower** because $t_{df, 0.975} > t_{df, 0.95}$.
+
+# Question 6
+
+To further test the hospital triage system, administrators selected 200 nights and randomly assigned a new triage system to be used on 100 nights and a standard system on the remaining 100 nights. They calculated the nightly median waiting time (MWT) to see a physician. The average MWT for the new system was 4 hours with a standard deviation of 0.5 hours while the average MWT for the old system was 6 hours with a standard deviation of 2 hours. Consider the hypothesis of a decrease in the mean MWT associated with the new treatment.
+
+What does the 95% independent group confidence interval with unequal variances suggest vis a vis this hypothesis? (Because there's so many observations per group, just use the Z quantile instead of the T.)
+
+## Answer
+
+```{r q6}
+# new
+n_n <- 100
+mu_n <- 4
+s_n <- 0.5
+
+# old
+n_o <- 100
+mu_o <- 6
+s_o <- 2
+
+(mu_o - mu_n) + c(1, -1) * qnorm(0.975) * sqrt(s_n^2 / n_n + s_o^2 / n_o)
+```
+
+Since, this interval is above zero (old - new), we reject the null hypothesis and conclude that the new system does reduce median waiting times (MWTs).
+
+Therefore, **When subtracting (old - new) the interval is entirely above zero. The new system appears to be effective.**
+
+# Question 7
+
+Suppose that 18 obese subjects were randomized, 9 each, to a new diet pill and a placebo. Subjects’ body mass indices (BMIs) were measured at a baseline and again after having received the treatment or placebo for four weeks. The average difference from follow-up to the baseline (followup - baseline) was -3 kg/m2 for the treated group and 1 kg/m2 for the placebo group. The corresponding standard deviations of the differences was 1.5 kg/m2 for the treatment group and 1.8 kg/m2 for the placebo group. Does the change in BMI over the four week period appear to differ between the treated and placebo groups? Assuming normality of the underlying data and a common population variance, calculate the relevant *90%* t confidence interval. Subtract in the order of (Treated - Placebo) with the smaller (more negative) number first.
+
+## Answer
+
+```{r q7}
+n_t <- n_p <- 9
+
+# treated
+mu_t <- -3
+s_t <- 1.5
+
+# placebo
+mu_p <- 1
+s_p <- 1.8
+
+s_pool <- sqrt(((n_t - 1) * s_t^2 + (n_p - 1) * s_p^2) / (n_t + n_p - 2))
+
+(mu_t - mu_p) + c(-1, 1) * qt(0.95, n_t + n_p - 2) * s_pool * sqrt(1/n_t + 1/n_p)
+```
